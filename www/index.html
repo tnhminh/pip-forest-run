@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Pip's Forest Run</title>
+<meta name="description" content="Race a lantern-carrying forest sprite down the old mine rails. Dodge logs, beams and runaway carts, collect golden acorns.">
+<meta name="theme-color" content="#0c141d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="game" aria-label="Pip's Forest Run"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-acorn" viewBox="0 0 40 40"><path d="M20 38c-7 0-12-7-12-15h24c0 8-5 15-12 15z" fill="#ffc23a"/><path d="M13 25c2 6 5 9 7 10" stroke="#fff3c4" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/><path d="M5 23c0-7 7-11 15-11s15 4 15 11z" fill="#7a4520"/><path d="M9 19h22M12 16h16" stroke="#5a3014" stroke-width="1.6"/><path d="M20 12c0-3 1-6 4-8" stroke="#5a3014" stroke-width="3" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-magnet" viewBox="0 0 24 24"><path d="M5 3h4v9a3 3 0 0 0 6 0V3h4v9a7 7 0 0 1-14 0z" fill="currentColor"/><path d="M5 3h4v3H5zM15 3h4v3h-4z" fill="#fff"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V5z" fill="currentColor"/><path d="M8 12l3 3 5-6" stroke="#0a1018" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dbl" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-family="Lilita One,sans-serif" font-size="15" fill="currentColor">×2</text></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 2c4 2 6 6 6 11l-2 3H8l-2-3c0-5 2-9 6-11z" fill="currentColor"/><circle cx="12" cy="10" r="2.2" fill="#0a1018"/><path d="M9 17l3 5 3-5z" fill="#ff7a3d"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="currentColor"/><rect x="2" y="6" width="20" height="4" rx="1.5" fill="currentColor"/><path d="M12 6v15" stroke="#0a1018" stroke-width="2.2"/><path d="M12 6C10 2 6 3 7 6M12 6c2-4 6-3 5 0" stroke="currentColor" stroke-width="2" fill="none"/></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 8h16l-1.5 12a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2z" fill="currentColor"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm9 4.7v-2.4l-2.4-.6a7 7 0 0 0-.8-1.9l1.3-2.1-1.7-1.7-2.1 1.3a7 7 0 0 0-1.9-.8L12.8 2h-2.4l-.6 2.4a7 7 0 0 0-1.9.8L5.8 3.9 4.1 5.6l1.3 2.1a7 7 0 0 0-.8 1.9L2.2 10.2v2.4l2.4.6c.2.7.4 1.3.8 1.9l-1.3 2.1 1.7 1.7 2.1-1.3c.6.4 1.2.6 1.9.8l.6 2.4h2.4l.6-2.4c.7-.2 1.3-.4 1.9-.8l2.1 1.3 1.7-1.7-1.3-2.1c.4-.6.6-1.2.8-1.9z" fill="currentColor"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></symbol>
+    <symbol id="i-ad" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#0a1018"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2.5" fill="currentColor"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.4" fill="none"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ HUD ============ -->
+<div class="hud" id="hud" hidden>
+  <div class="hud-top">
+    <div class="score">
+      <div class="lbl">Score</div><div class="val" id="hScore">0</div>
+      <div class="sub"><span><span id="hDist">0</span> m</span><span class="chip-mult" id="hMult">×1</span><span class="chip-dbl" id="hDbl" hidden>×2</span></div>
+    </div>
+    <div class="powers">
+      <div class="ring" id="r-magnet" style="--c:var(--magnet)" hidden><span><svg style="color:var(--magnet)"><use href="#i-magnet"/></svg></span></div>
+      <div class="ring" id="r-shield" style="--c:var(--shield)" hidden><span><svg style="color:var(--shield)"><use href="#i-shield"/></svg></span></div>
+      <div class="ring" id="r-dbl" style="--c:var(--dbl)" hidden><span><svg style="color:var(--dbl)"><use href="#i-dbl"/></svg></span></div>
+    </div>
+    <div class="pill" id="hPill"><svg><use href="#i-acorn"/></svg><div class="num" id="hCoins">0</div></div>
+  </div>
+  <div class="boostbar" id="hBoost" hidden><span>Head start</span><div><i id="hBoostFill"></i></div></div>
+  <button class="ibtn pausebtn" id="pauseBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>
+</div>
+<div class="center-count"><div id="count" hidden></div></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- tutorial prompt -->
+<div class="tut" id="tut" hidden>
+  <div class="tut-card">
+    <div class="swipe" id="tutSwipe"><i></i></div>
+    <div class="tut-text" id="tutText">Swipe up to jump</div>
+    <div class="tut-keys" id="tutKeys"></div>
+  </div>
+</div>
+
+<!-- ============ HOME ============ -->
+<div class="screen" id="home">
+  <div class="topbar">
+    <button class="levelchip" id="levelChip" type="button" aria-label="Missions">
+      <span class="lv" id="hmLevel">Lv 1</span><span class="mx">Score <b id="hmMult">×1</b></span>
+    </button>
+    <div class="row gap8">
+      <button class="pill pill-btn" id="hmWallet" type="button" aria-label="Get acorns"><svg><use href="#i-acorn"/></svg><span class="num" id="hmAcorns">0</span><span class="plus">+</span></button>
+      <button class="ibtn" id="hmSettings" type="button" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+    </div>
+  </div>
+  <div class="home-main">
+    <div class="logo"><span class="logo-top">Pip's</span><span class="logo-main">Forest<br>Run</span></div>
+    <div class="home-actions">
+      <button class="cta" id="playBtn" type="button"><svg><use href="#i-play"/></svg>Run!</button>
+      <button class="hs-toggle" id="hsToggle" type="button" aria-pressed="false">
+        <svg><use href="#i-rocket"/></svg><span id="hsLabel">Head start</span><span class="hs-count" id="hsCount">×1</span>
+      </button>
+      <div class="best" id="hmBest" hidden>Best <b id="hmBestVal">0</b></div>
+    </div>
+    <nav class="dock">
+      <button class="dock-btn" id="navMissions" type="button"><svg><use href="#i-target"/></svg><span>Missions</span><i class="badge" id="bMissions" hidden></i></button>
+      <button class="dock-btn" id="navDaily" type="button"><svg><use href="#i-gift"/></svg><span>Daily</span><i class="badge dot" id="bDaily" hidden></i></button>
+      <button class="dock-btn" id="navShop" type="button"><svg><use href="#i-shop"/></svg><span>Shop</span><i class="badge dot" id="bShop" hidden></i></button>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ SHEETS ============ -->
+<div class="sheet-wrap" id="sheetMissions" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tMissions">
+    <header><h2 id="tMissions">Missions</h2><button class="ibtn" data-close type="button" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="sheet-body">
+      <div class="level-card"><div><div class="eyebrow">Mission set</div><div class="lvbig" id="msLevel">Level 1</div></div><div class="mult-big"><span>Score</span><b id="msMult">×1</b></div></div>
+      <p class="hint">Finish all three missions to raise your score multiplier for every run after.</p>
+      <div class="missions" id="msList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="sheetDaily" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tDaily">
+    <header><h2 id="tDaily">Daily gift</h2><button class="ibtn" data-close type="button" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="sheet-body">
+      <p class="hint" id="dlHint">Come back every day. Miss a day and the streak starts over.</p>
+      <div class="days" id="dlDays"></div>
+      <div class="row center gap8 wrap" id="dlActions"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="sheetShop" hidden>
+  <div class="sheet tall" role="dialog" aria-modal="true" aria-labelledby="tShop">
+    <header><h2 id="tShop">Shop</h2><div class="pill small"><svg><use href="#i-acorn"/></svg><span class="num" id="shAcorns">0</span></div><button class="ibtn" data-close type="button" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="outfits" aria-selected="true">Outfits</button>
+      <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades</button>
+      <button role="tab" data-tab="acorns" aria-selected="false">Acorns</button>
+    </div>
+    <div class="sheet-body" id="shBody"></div>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="sheetSettings" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tSettings">
+    <header><h2 id="tSettings">Settings</h2><button class="ibtn" data-close type="button" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="sheet-body settings">
+      <label class="set-row"><span>Sound effects</span><input type="checkbox" id="stSfx" class="switch"></label>
+      <label class="set-row"><span>Music</span><input type="checkbox" id="stMusic" class="switch"></label>
+      <label class="set-row"><span>Vibration</span><input type="checkbox" id="stHaptics" class="switch"></label>
+      <div class="set-row"><span>Graphics</span>
+        <div class="seg" role="radiogroup" aria-label="Graphics">
+          <button type="button" role="radio" data-q="auto">Auto</button><button type="button" role="radio" data-q="high">Rich</button><button type="button" role="radio" data-q="low">Smooth</button>
+        </div>
+      </div>
+      <div class="set-links">
+        <button class="btn ghost" id="stRestore" type="button">Restore purchases</button>
+        <button class="btn ghost" id="stPrivacyOpts" type="button" hidden>Privacy choices</button>
+        <a class="btn ghost" id="stPrivacy" href="privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+        <button class="btn ghost" id="stTutorial" type="button">Replay tutorial</button>
+        <button class="btn danger" id="stReset" type="button">Reset progress</button>
+      </div>
+      <p class="fine" id="stVersion"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="overlay" id="paused" hidden>
+  <div class="card"><h2 class="card-title">Paused</h2>
+    <div class="col gap10"><button class="cta" id="resumeBtn" type="button">Resume</button><button class="btn ghost" id="quitBtn" type="button">End run and go home</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="revive" hidden>
+  <div class="card">
+    <div class="revive-ring" id="rvRing"><span id="rvSec">6</span></div>
+    <h2 class="card-title">Keep running?</h2>
+    <p class="reason" id="rvReason"></p>
+    <div class="col gap10">
+      <button class="cta ad" id="rvAd" type="button"><svg><use href="#i-ad"/></svg>Watch ad to continue</button>
+      <button class="btn acorn" id="rvPay" type="button"><svg><use href="#i-acorn"/></svg><span id="rvPrice">150</span> acorns</button>
+      <button class="btn ghost" id="rvNo" type="button">No thanks</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="results" hidden>
+  <div class="card wide">
+    <h2 class="card-title bonk">Bonk!</h2>
+    <p class="reason" id="rsReason"></p>
+    <div class="ribbon" id="rsBest" hidden>New best run!</div>
+    <div class="stats">
+      <div><small>Score</small><b id="rsScore">0</b></div>
+      <div><small>Distance</small><b id="rsDist">0 m</b></div>
+      <div><small>Acorns</small><b class="gold" id="rsCoins">0</b></div>
+      <div><small>Best</small><b id="rsBestVal">0</b></div>
+    </div>
+    <div class="mini-missions" id="rsMissions"></div>
+    <button class="btn adwide" id="rsDouble" type="button"><svg><use href="#i-ad"/></svg>Double your acorns</button>
+    <div class="row center gap10"><button class="cta" id="rsAgain" type="button">Run again</button><button class="btn ghost" id="rsHome" type="button">Home</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="nogl" hidden><div class="card"><h2 class="card-title">No 3D</h2><p class="reason">This device could not start WebGL, which the game needs. Try updating your browser or system WebView.</p></div></div>
+
+<script src="vendor/three/three.min.js"></script>
+<script src="vendor/three/CopyShader.js"></script>
+<script src="vendor/three/LuminosityHighPassShader.js"></script>
+<script src="vendor/three/EffectComposer.js"></script>
+<script src="vendor/three/ShaderPass.js"></script>
+<script src="vendor/three/RenderPass.js"></script>
+<script src="vendor/three/UnrealBloomPass.js"></script>
+<script src="vendor/three/BufferGeometryUtils.js"></script>
+<script src="js/native.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

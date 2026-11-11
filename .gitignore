@@ -1,0 +1,9 @@
+node_modules/
+android/keystore.properties
+android/*.jks
+*.log
+dist-artifact/
+android/app/build/
+android/build/
+android/.gradle/
+release/

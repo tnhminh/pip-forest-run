@@ -1,0 +1,31 @@
+{
+  "name": "pip-forest-run",
+  "version": "1.0.0",
+  "description": "Pip's Forest Run: 3D endless rail runner",
+  "scripts": {
+    "serve": "cd www && python3 -m http.server 8765",
+    "build:native": "esbuild src/native-entry.js --bundle --format=iife --minify --target=es2019 --outfile=www/js/native.js",
+    "build:android": "npm run build:native && npx cap sync android && cd android && ./gradlew bundleRelease assembleDebug",
+    "icons": "node tools/icon.js && cp assets/icon-only.png assets/icon.png && npx @capacitor/assets generate --android --iconBackgroundColor '#0c141d' --splashBackgroundColor '#0c141d'",
+    "screenshots": "node tools/screenshots.js",
+    "test": "node --no-warnings tests/meta.test.mjs"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.3.0",
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.6.0",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4",
+    "@revenuecat/purchases-capacitor": "^14.1.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.0",
+    "esbuild": "^0.28.2"
+  },
+  "private": true
+}

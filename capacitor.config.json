@@ -1,0 +1,12 @@
+{
+  "appId": "com.pipforestrun.game",
+  "appName": "Pip's Forest Run",
+  "webDir": "www",
+  "backgroundColor": "#0c141d",
+  "android": { "backgroundColor": "#0c141d", "allowMixedContent": false },
+  "ios": { "backgroundColor": "#0c141d", "contentInset": "never" },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 600, "backgroundColor": "#0c141d", "showSpinner": false, "launchAutoHide": true },
+    "LocalNotifications": { "iconColor": "#ffc23a" }
+  }
+}
